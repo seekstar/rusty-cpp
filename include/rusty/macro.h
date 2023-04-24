@@ -9,7 +9,7 @@
 } while (0)
 
 #define rusty_assert(cond, ...) do { \
-    if (!cond) { rusty_panic(__VA_ARGS__); }   \
+    if (!(cond)) { rusty_panic(__VA_ARGS__); }   \
 } while (0)
 
 #endif // RUSTY_MACRO_H_
