@@ -1,6 +1,9 @@
 #ifndef RUSTY_MACRO_H_
 #define RUSTY_MACRO_H_
 
+#include <cstdio>
+#include <cstdlib>
+
 #define rusty_panic(...) do { \
     fprintf(stderr, "panic: %s:%u: %s:", \
         __FILE__, __LINE__, __func__); \
