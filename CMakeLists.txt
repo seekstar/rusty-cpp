@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(rusty-cpp CXX)
 
 add_library(rusty-cpp INTERFACE)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories(rusty-cpp INTERFACE include)
 
 file(GLOB_RECURSE RUSTY_HEADERS "include/rusty/*")
