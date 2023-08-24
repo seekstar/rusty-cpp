@@ -17,19 +17,19 @@ T __next_power_of_two_uint(T x) {
 	return ans;
 }
 
-unsigned char next_power_of_two(unsigned char x) {
+static inline unsigned char next_power_of_two(unsigned char x) {
 	return __next_power_of_two_uint(x);
 }
-unsigned short next_power_of_two(unsigned short x) {
+static inline unsigned short next_power_of_two(unsigned short x) {
 	return __next_power_of_two_uint(x);
 }
-unsigned int next_power_of_two(unsigned int x) {
+static inline unsigned int next_power_of_two(unsigned int x) {
 	return __next_power_of_two_uint(x);
 }
-unsigned long next_power_of_two(unsigned long x) {
+static inline unsigned long next_power_of_two(unsigned long x) {
 	return __next_power_of_two_uint(x);
 }
-unsigned long long next_power_of_two(unsigned long long x) {
+static inline unsigned long long next_power_of_two(unsigned long long x) {
 	return __next_power_of_two_uint(x);
 }
 
