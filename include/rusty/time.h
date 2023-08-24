@@ -7,9 +7,17 @@ namespace rusty {
 namespace time {
 class Duration {
 public:
+	Duration(const Duration &duration) : Duration(duration.nsec_) {}
+	Duration &operator=(const Duration &rhs) {
+		nsec_ = rhs.nsec_;
+		return *this;
+	}
 	static Duration from_nanos(uint64_t nsec) { return Duration(nsec); }
 	uint64_t as_nanos() const {
 		return nsec_;
+	}
+	Duration operator+(Duration rhs) const {
+		return Duration(nsec_ + rhs.nsec_);
 	}
 private:
 	Duration(uint64_t nsec) : nsec_(nsec) {}
