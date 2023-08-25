@@ -3,10 +3,10 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
-    version = "0.1.4"
+    version = "0.1.5"
 
     # Optional metadata
-    license = "MPLv2"
+    license = "dual licensed under the Apache License v2.0 and the MIT License"
     author = "Jiansheng Qiu jianshengqiu.cs@gmail.com"
     url = "https://github.com/seekstar/rusty-cpp"
     description = "Write C++ like rust"
