@@ -16,6 +16,9 @@ public:
 	uint64_t as_nanos() const {
 		return nsec_;
 	}
+	double as_secs_double() const {
+		return nsec_ / 1e9;
+	}
 	Duration operator+(Duration rhs) const {
 		return Duration(nsec_ + rhs.nsec_);
 	}
