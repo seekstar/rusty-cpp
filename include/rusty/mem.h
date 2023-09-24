@@ -17,12 +17,13 @@ public:
 		v_ = std::move(rhs.v_);
 		return *this;
 	}
+	~ManuallyDrop() {}
 	ManuallyDrop &operator=(T &&v) { v_ = std::move(v); return *this; }
 	T into_inner() { return std::move(v_); }
 	void drop() { v_.~T(); }
 private:
 	union {
-		int v_;
+		T v_;
 	};
 };
 
