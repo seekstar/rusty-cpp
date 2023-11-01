@@ -22,6 +22,10 @@ public:
 	Duration operator+(Duration rhs) const {
 		return Duration(nsec_ + rhs.nsec_);
 	}
+	Duration &operator+=(Duration rhs) {
+		nsec_ += rhs.nsec_;
+		return *this;
+	}
 private:
 	Duration(uint64_t nsec) : nsec_(nsec) {}
 	// uint128_t is not in standard C++ yet.
