@@ -18,6 +18,9 @@ public:
 	  : nsec_(std::chrono::duration_cast<std::chrono::nanoseconds>(
 			duration
 		).count()) {}
+	static Duration from_secs(uint64_t secs) {
+		return Duration(secs * 1000000000);
+	}
 	static Duration from_nanos(uint64_t nsec) { return Duration(nsec); }
 	uint64_t as_nanos() const {
 		return nsec_;
