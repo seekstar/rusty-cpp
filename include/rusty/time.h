@@ -13,6 +13,7 @@ public:
 		nsec_ = rhs.nsec_;
 		return *this;
 	}
+	Duration() : nsec_(0) {}
 	template <typename Rep, typename Period>
 	Duration(const std::chrono::duration<Rep, Period> &duration)
 	  : nsec_(std::chrono::duration_cast<std::chrono::nanoseconds>(
