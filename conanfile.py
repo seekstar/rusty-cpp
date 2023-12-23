@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
-    version = "0.1.9"
+    version = "0.1.10"
 
     # Optional metadata
     license = "dual licensed under the Apache License v2.0 and the MIT License"
@@ -13,10 +13,12 @@ class rusty_cppRecipe(ConanFile):
     topics = ("C++", "Rust")
 
     # Binary configuration
-    settings = "os", "compiler", "build_type", "arch"
+    settings = "build_type"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "include/*"
+    # We can avoid copying the sources to the build folder in the cache
+    no_copy_source = True
 
     def layout(self):
         cmake_layout(self)
@@ -27,13 +29,9 @@ class rusty_cppRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.generate()
 
-    def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
-
     def package(self):
         cmake = CMake(self)
+        cmake.configure()
         cmake.install()
 
     def package_info(self):
