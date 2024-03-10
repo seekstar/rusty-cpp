@@ -11,6 +11,8 @@ class Result : public std::variant<T, E> {
 public:
 	Result(T &&v) : std::variant<T, E>(std::move(v)) {}
 	Result(E &&e) : std::variant<T, E>(std::move(e)) {}
+	Result(const E &e) : std::variant<T, E>(e) {}
+
 	bool is_ok() const { return this->index() == 0; }
 	bool is_err() const { return this->index() == 1; }
 	T &&unwrap() {
