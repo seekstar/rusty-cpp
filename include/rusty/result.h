@@ -27,11 +27,12 @@ public:
 
 } // namespace rusty
 
-#define rusty_check(arg) ({											\
-	auto &&result = std::forward<std::decay_t<decltype(arg)>>(arg);	\
-	if (result.index() == 1)										\
-		return std::move(std::get<1>(std::move(result)));			\
-	std::move(std::get<0>(std::move(result)));						\
+#define rusty_check(arg) ({						\
+	using type = std::decay_t<decltype(arg)>;	\
+	type result = std::forward<type>(arg);		\
+	if (result.index() == 1)					\
+		return std::get<1>(std::move(result));	\
+	std::get<0>(std::move(result));				\
 })
 
 #endif // RUSTY_RESULT_H_
