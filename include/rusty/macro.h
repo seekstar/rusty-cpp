@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 #define rusty_panic(...) do { \
 	/* The "if" should be optimized out by the compiler */ \
