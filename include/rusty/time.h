@@ -49,20 +49,22 @@ public:
 	Duration elapsed() const {
 		return now() - *this;
 	}
-	Duration operator-(const Instant &earlier) {
-		return Duration::from_nanos(
-			std::chrono::duration_cast<std::chrono::nanoseconds>(
-				time_ - earlier.time_).count());
+	bool operator<(const Instant &rhs) const {
+		return time_ < rhs.time_;
 	}
-	Instant operator+(const Duration &duration) {
+	Duration operator-(const Instant &earlier) const {
+		return time_ - earlier.time_;
+	}
+	Instant operator+(const Duration &duration) const {
 		return time_ + std::chrono::nanoseconds(duration.as_nanos());
 	}
 	Instant &operator+=(const Duration &duration) {
 		time_ += std::chrono::nanoseconds(duration.as_nanos());
 		return *this;
 	}
+	// Deprecated
 	std::optional<Duration> checked_duration_since(const Instant &earlier) {
-		if (time_ < earlier.time_) {
+		if (*this < earlier) {
 			return std::nullopt;
 		}
 		return time_ - earlier.time_;
