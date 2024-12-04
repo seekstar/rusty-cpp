@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
-    version = "0.1.11"
+    version = "0.1.12"
 
     # Optional metadata
     license = "dual licensed under the Apache License v2.0 and the MIT License"
