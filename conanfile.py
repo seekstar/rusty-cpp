@@ -1,12 +1,13 @@
 from conan import ConanFile
+from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
     version = "0.1.12"
 
-    # Optional metadata
-    license = "dual licensed under the Apache License v2.0 and the MIT License"
+    # dual licensed under the Apache License v2.0 and the MIT License
+    license = "Apache-2.0", "MIT"
     author = "Jiansheng Qiu jianshengqiu.cs@gmail.com"
     url = "https://github.com/seekstar/rusty-cpp"
     description = "Write C++ like rust"
@@ -20,8 +21,16 @@ class rusty_cppRecipe(ConanFile):
     # We can avoid copying the sources to the build folder in the cache
     no_copy_source = True
 
+    def package_id(self):
+        # Header-only libraries are the same for every platform.
+        # This ensures only one package is needed everywhere.
+        self.info.clear()
+
     def layout(self):
         cmake_layout(self)
+
+    def validate(self):
+        check_min_cppstd(self, 17)
 
     def generate(self):
         deps = CMakeDeps(self)
