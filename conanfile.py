@@ -14,7 +14,7 @@ class rusty_cppRecipe(ConanFile):
     url = "https://github.com/seekstar/rusty-cpp"
     topics = ("C++", "Rust")
 
-    settings = "build_type"
+    settings = "compiler", "build_type"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "include/*"
