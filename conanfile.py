@@ -2,18 +2,18 @@ from conan import ConanFile
 from conan.tools.build import check_min_cppstd
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
+required_conan_version = ">=2.0"
+
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
     version = "0.1.12"
-
+    description = "Write C++ like Rust!"
     # dual licensed under the Apache License v2.0 and the MIT License
     license = "Apache-2.0", "MIT"
     author = "Jiansheng Qiu jianshengqiu.cs@gmail.com"
     url = "https://github.com/seekstar/rusty-cpp"
-    description = "Write C++ like rust"
     topics = ("C++", "Rust")
 
-    # Binary configuration
     settings = "build_type"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
