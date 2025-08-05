@@ -23,6 +23,7 @@ public:
 			~PeekMut();
 			heap_ = peeked.heap_;
 			peeked.heap_ = nullptr;
+			return *this;
 		}
 
 		~PeekMut() {
