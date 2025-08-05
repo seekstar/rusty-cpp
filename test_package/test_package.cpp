@@ -1,13 +1,8 @@
+#include "test.h"
+
 #include <cstdio>
-#include <gtest/gtest.h>
 #include <rusty/macro.h>
 #include <rusty/primitive.h>
-
-class Test : public ::testing::Test {
-public:
-	void SetUp() override {}
-	void TearDown() override {}
-};
 
 TEST_F(Test, Asserts) {
 	rusty_assert(1);
