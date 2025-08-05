@@ -68,6 +68,16 @@ public:
 		rusty_assert(!mut_borrowed_);
 	}
 
+	MinHeap(MinHeap &&rhs) : v_(std::move(rhs.v_)), cmp_(std::move(rhs.cmp_)) {
+		rusty_assert(!mut_borrowed_);
+	}
+	MinHeap &operator=(MinHeap &&rhs) {
+		rusty_assert(!mut_borrowed_);
+		v_ = std::move(rhs.v_);
+		cmp_ = std::move(rhs.cmp_);
+		return *this;
+	}
+
 	bool is_empty() const {
 		rusty_assert(!mut_borrowed_);
 		return v_.empty();
