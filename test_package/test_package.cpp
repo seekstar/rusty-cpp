@@ -1,8 +1,8 @@
+#include "rusty/macro.h"
+#include "rusty/primitive.h"
 #include "test.h"
 
 #include <cstdio>
-#include <rusty/macro.h>
-#include <rusty/primitive.h>
 
 TEST_F(Test, Asserts) {
 	rusty_assert(1);

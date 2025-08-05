@@ -1,7 +1,7 @@
 #ifndef RUSTY_PRIMITIVE_H_
 #define RUSTY_PRIMITIVE_H_
 
-#include <rusty/macro.h>
+#include "rusty/macro.h"
 
 namespace rusty {
 

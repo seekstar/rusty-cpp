@@ -1,7 +1,8 @@
 #ifndef RUSTY_RESULT_H_
 #define RUSTY_RESULT_H_
 
-#include <rusty/macro.h>
+#include "rusty/macro.h"
+
 #include <variant>
 
 namespace rusty {
