@@ -31,7 +31,7 @@ TEST_F(Test, MinHeapSimple) {
 	ASSERT_NO_FATAL_FAILURE(pop_all(heap, q));
 
 	q = {data.begin(), data.end()};
-	heap = rusty::MinHeap<int>(data);
+	heap = rusty::MakeMinHeap(data);
 	for (int x : data) {
 		auto res = heap.peek_mut();
 		ASSERT_TRUE(res.has_value());

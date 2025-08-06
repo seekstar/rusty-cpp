@@ -57,6 +57,7 @@ public:
 		MinHeap<T, Compare> *heap_;
 		friend class MinHeap;
 	};
+
 	explicit MinHeap(
 		std::vector<T> v = {}, Compare compare = Compare()
 	) : v_(std::move(v)), cmp_(std::move(compare)) {
@@ -146,6 +147,11 @@ private:
 	Compare cmp_;
 	bool mut_borrowed_ = false;
 };
+
+template <typename T, typename Compare = std::less<T>>
+MinHeap<T, Compare> MakeMinHeap(std::vector<T> v, Compare compare = Compare()) {
+	return MinHeap<T, Compare>(std::move(v), std::move(compare));
+}
 
 }  // namespace rusty
 
