@@ -25,7 +25,7 @@
 	} \
 } while (0)
 
-#define __rusty_assert_eq(l, r, fmt, ...) do { \
+#define rusty_assert_eq_impl(l, r, fmt, ...) do { \
 	auto left= (l); \
 	auto right= (r); \
 	rusty_assert( \
@@ -36,9 +36,9 @@
 } while (0)
 
 #define rusty_assert_eq(l, r, ...) \
-	__rusty_assert_eq(l, r, "" __VA_ARGS__)
+	rusty_assert_eq_impl(l, r, "" __VA_ARGS__)
 
-#define __rusty_assert_ne(l, r, fmt, ...) do { \
+#define rusty_assert_ne_impl(l, r, fmt, ...) do { \
 	auto left= (l); \
 	auto right= (r); \
 	rusty_assert( \
@@ -49,6 +49,6 @@
 } while (0)
 
 #define rusty_assert_ne(l, r, ...) \
-	__rusty_assert_ne(l, r, "" __VA_ARGS__)
+	rusty_assert_ne_impl(l, r, "" __VA_ARGS__)
 
 #endif // RUSTY_MACRO_H_
