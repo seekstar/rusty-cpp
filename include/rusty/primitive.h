@@ -67,7 +67,4 @@ static inline unsigned long long next_power_of_two(unsigned long long x) {
 
 }  // namespace rusty
 
-// DEPRECATED
-using rusty::next_power_of_two;
-
 #endif // RUSTY_PRIMITIVE_H_

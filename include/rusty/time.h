@@ -2,7 +2,6 @@
 #define RUSTY_TIME_H_
 
 #include <chrono>
-#include <optional>
 
 namespace rusty {
 namespace time {
@@ -62,13 +61,7 @@ public:
 		time_ += std::chrono::nanoseconds(duration.as_nanos());
 		return *this;
 	}
-	// Deprecated
-	std::optional<Duration> checked_duration_since(const Instant &earlier) {
-		if (*this < earlier) {
-			return std::nullopt;
-		}
-		return time_ - earlier.time_;
-	}
+
 private:
 	Instant(std::chrono::steady_clock::time_point time) : time_(time) {}
 	std::chrono::steady_clock::time_point time_;

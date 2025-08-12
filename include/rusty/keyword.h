@@ -28,7 +28,4 @@ auto match(Val &&val, Ts... ts) {
 
 } // namespace rusty
 
-// DEPRECATED
-using rusty::match;
-
 #endif // RUSTY_KEYWORD_H_
