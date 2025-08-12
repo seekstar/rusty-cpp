@@ -2,6 +2,7 @@
 #define RUSTY_ERROR_H_
 
 #include "rusty/option.h"
+#include "rusty/result.h"
 
 #include <ostream>
 
@@ -28,6 +29,7 @@ enum class ErrorKind {
 	NotFound,
 	PermissionDenied,
 	AlreadyExists,
+	NotADirectory,
 	Other,
 };
 
@@ -87,6 +89,9 @@ public:
 		case ErrorKind::AlreadyExists:
 			out << "entity already exists";
 			break;
+		case ErrorKind::NotADirectory:
+			out << "not a directory";
+			break;
 		case ErrorKind::Other:
 			out << "other error";
 			break;
@@ -107,6 +112,9 @@ private:
 		case EEXIST:
 			kind_ = ErrorKind::AlreadyExists;
 			break;
+		case ENOTDIR:
+			kind_ = ErrorKind::NotADirectory;
+			break;
 		default:
 			kind_ = ErrorKind::Other;
 			break;
@@ -116,6 +124,9 @@ private:
 	ErrorKind kind_;
 	Option<RawOsError> code_;
 };
+
+template <typename T>
+using Result = rusty::Result<T, Error>;
 
 }  // namespace io
 
