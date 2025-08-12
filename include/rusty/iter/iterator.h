@@ -119,6 +119,11 @@ Iter<T> MakeIter(const T *start, const T *end) {
 }
 
 template <typename T>
+Iter<T> MakeIter(const std::vector<T> &v) {
+	return Iter<T>(v.data(), v.data() + v.size());
+}
+
+template <typename T>
 std::unique_ptr<Iterator<Ref<const T>>> MakeTraitObject(Iter<T> &&iter) {
 	return std::make_unique<
 		typename Iterator<Ref<const T>>::template FatPointer<Iter<T>>

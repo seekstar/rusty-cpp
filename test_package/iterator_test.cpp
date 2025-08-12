@@ -17,14 +17,14 @@ TEST_F(Test, IteratorSimple) {
 	ASSERT_TRUE(rusty::MakeIter(a.data(), a.data()).next().is_none());
 
 	std::vector<rusty::Ref<const int>> b;
-	rusty::collect_into(rusty::MakeIter(a.data(), a.data() + a.size()), b);
+	rusty::collect_into(rusty::MakeIter(a), b);
 	ASSERT_NO_FATAL_FAILURE(check(a, b));
 
 	std::unique_ptr<rusty::Iterator<rusty::Ref<const int>>> iter =
 		rusty::MakeTraitObject(rusty::MakeIter(a.data(), a.data()));
 	ASSERT_TRUE(iter->next().is_none());
 
-	iter = rusty::MakeTraitObject(rusty::MakeIter(a.data(), a.data() + a.size()));
+	iter = rusty::MakeTraitObject(rusty::MakeIter(a));
 	b.clear();
 	rusty::collect_into(std::move(iter), b);
 	ASSERT_NO_FATAL_FAILURE(check(a, b));
