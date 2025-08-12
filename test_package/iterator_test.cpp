@@ -20,7 +20,8 @@ TEST_F(Test, IteratorSimple) {
 	rusty::collect_into(rusty::MakeIter(a.data(), a.data() + a.size()), b);
 	ASSERT_NO_FATAL_FAILURE(check(a, b));
 
-	auto iter = rusty::MakeTraitObject(rusty::MakeIter(a.data(), a.data()));
+	std::unique_ptr<rusty::Iterator<rusty::Ref<const int>>> iter =
+		rusty::MakeTraitObject(rusty::MakeIter(a.data(), a.data()));
 	ASSERT_TRUE(iter->next().is_none());
 
 	iter = rusty::MakeTraitObject(rusty::MakeIter(a.data(), a.data() + a.size()));

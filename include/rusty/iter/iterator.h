@@ -5,6 +5,7 @@
 
 #include <functional>
 #include <memory>
+#include <type_traits>
 #include <vector>
 
 namespace rusty {
@@ -44,15 +45,16 @@ private:
 namespace detail {
 
 template <typename T>
-class IteratorImpl : public T {
+class IteratorImpl {
 public:
-	template <typename... Args>
-	IteratorImpl(Args &&... args) : T(std::forward<Args>(args)...) {}
+	static inline constexpr bool impl = false;
 };
 
 template <typename Iter>
 class IteratorImpl<std::unique_ptr<Iter>> {
 public:
+	static inline constexpr bool impl = true;
+
 	using value_type = typename Iter::value_type;
 	explicit IteratorImpl(
 		std::unique_ptr<Iter> iter
@@ -67,21 +69,26 @@ private:
 
 } // namespace detail
 
-template <typename I>
+template <typename I, typename = std::enable_if_t<!detail::IteratorImpl<I>::impl>>
 void collect_into(
-	I iter,
-	std::vector<typename detail::IteratorImpl<I>::value_type> &v
+	I iter, std::vector<typename I::value_type> &v
 ) {
-	auto it = detail::IteratorImpl<I>(std::move(iter));
 	for (;;) {
-		auto res = it.next(
-			type_tag_t<Iterator<typename detail::IteratorImpl<I>::value_type>>()
+		auto res = iter.next(
+			type_tag_t<Iterator<typename I::value_type>>()
 		);
 		if (res.is_none()) {
 			break;
 		}
 		v.push_back(std::move(res).unwrap_unchecked());
 	}
+}
+
+template <typename I, typename = std::enable_if_t<detail::IteratorImpl<I>::impl>>
+void collect_into(
+	I iter, std::vector<typename detail::IteratorImpl<I>::value_type> &v
+) {
+	collect_into(detail::IteratorImpl<I>(std::move(iter)), v);
 }
 
 template <typename T>
