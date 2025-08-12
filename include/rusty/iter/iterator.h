@@ -71,7 +71,7 @@ private:
 
 template <typename I, typename = std::enable_if_t<!detail::IteratorImpl<I>::impl>>
 void collect_into(
-	I iter, std::vector<typename I::value_type> &v
+	I &&iter, std::vector<typename I::value_type> &v
 ) {
 	for (;;) {
 		auto res = iter.next(
@@ -86,9 +86,9 @@ void collect_into(
 
 template <typename I, typename = std::enable_if_t<detail::IteratorImpl<I>::impl>>
 void collect_into(
-	I iter, std::vector<typename detail::IteratorImpl<I>::value_type> &v
+	I &&iter, std::vector<typename detail::IteratorImpl<I>::value_type> &v
 ) {
-	collect_into(detail::IteratorImpl<I>(std::move(iter)), v);
+	collect_into(detail::IteratorImpl<I>(std::forward<I>(iter)), v);
 }
 
 template <typename T>
@@ -119,7 +119,7 @@ Iter<T> MakeIter(const T *start, const T *end) {
 }
 
 template <typename T>
-std::unique_ptr<Iterator<Ref<const T>>> MakeTraitObject(Iter<T> iter) {
+std::unique_ptr<Iterator<Ref<const T>>> MakeTraitObject(Iter<T> &&iter) {
 	return std::make_unique<
 		typename Iterator<Ref<const T>>::template FatPointer<Iter<T>>
 	>(std::move(iter));
