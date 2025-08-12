@@ -20,6 +20,9 @@ Option<T> MakeOption(Args &&...args) {
 
 template <typename T>
 class Option {
+private:
+	using value_type = T;
+
 public:
 	Option() : v_(std::nullopt) {}
 	Option(class None) : v_(std::nullopt) {}
@@ -42,6 +45,12 @@ public:
 		}
 		return ref(v_.value());
 	}
+	const T *as_ptr() const {
+		if (is_none()) {
+			return nullptr;
+		}
+		return &v_.value();
+	}
 	bool is_none() const {
 		return !v_.has_value();
 	}
@@ -52,9 +61,13 @@ public:
 		return std::move(v_.value());
 	}
 
-	T unwrap() && {
+	value_type unwrap() && {
 		rusty_assert(is_some());
 		return std::move(*this).unwrap_unchecked();
+	}
+	Option<value_type> take() {
+		Option<value_type> ret;
+		std::swap(*this, ret);
 	}
 
 private:
@@ -63,6 +76,9 @@ private:
 
 template <typename T>
 class Option<Ref<T>> : Ref<T> {
+private:
+	using value_type = Ref<T>;
+
 public:
 	Option() : Ref<T>(nullptr) {}
 	Option(class None) : Ref<T>(nullptr) {}
@@ -75,6 +91,12 @@ public:
 		}
 		return ref(static_cast<const Ref<T> &>(*this));
 	}
+	const Ref<T> *as_ptr() const {
+		if (is_none()) {
+			return nullptr;
+		}
+		return this;
+	}
 	bool is_none() const {
 		return this->v_ == nullptr;
 	}
@@ -85,9 +107,14 @@ public:
 		return *this;
 	}
 
-	Ref<T> unwrap() && {
+	value_type unwrap() && {
 		rusty_assert(is_some());
 		return std::move(*this).unwrap_unchecked();
+	}
+	Option<value_type> take() {
+		Option<value_type> ret;
+		std::swap(*this, ret);
+		return ret;
 	}
 };
 static_assert(sizeof(Option<Ref<int>>) == sizeof(int *));

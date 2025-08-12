@@ -10,7 +10,7 @@ void check(const std::vector<int> &a, const std::vector<rusty::Ref<const int>> &
 		ASSERT_EQ(a[i], b[i].deref());
 	}
 }
-}
+} // namespace
 
 TEST_F(Test, IteratorSimple) {
 	std::vector<int> a{1, 3, 8, 2};
