@@ -1,5 +1,5 @@
-#ifndef RUSTY_PEEKABLE_H_
-#define RUSTY_PEEKABLE_H_
+#ifndef RUSTY_MIN_HEAP_H_
+#define RUSTY_MIN_HEAP_H_
 
 #include "rusty/macro.h"
 
@@ -155,4 +155,4 @@ MinHeap<T, Compare> MakeMinHeap(std::vector<T> v, Compare compare = Compare()) {
 
 }  // namespace rusty
 
-#endif // RUSTY_PEEKABLE_H_
+#endif // RUSTY_MIN_HEAP_H_
