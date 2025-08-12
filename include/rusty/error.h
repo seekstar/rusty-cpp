@@ -1,7 +1,8 @@
 #ifndef RUSTY_ERROR_H_
 #define RUSTY_ERROR_H_
 
-#include <optional>
+#include "rusty/option.h"
+
 #include <ostream>
 
 namespace rusty {
@@ -49,14 +50,15 @@ public:
 	ErrorKind kind() const {
 		return kind_;
 	}
-	std::optional<RawOsError> raw_os_error() const {
+	Option<RawOsError> raw_os_error() const {
 		return code_;
 	}
 
 	void print(std::ostream &out) const override {
-		if (code_.has_value()) {
-			RawOsError code = code_.value();
-			switch (code) {
+		auto code = code_.as_ref();
+		if (code.is_some()) {
+			RawOsError e = std::move(code).unwrap_unchecked().deref();
+			switch (e) {
 			case ENOENT:
 				out << "No such file or directory";
 				break;
@@ -73,7 +75,7 @@ public:
 				out << "Unrecoginized OS error";
 				break;
 			}
-			out << " (os error " << code << ")";
+			out << " (os error " << e << ")";
 		}
 		switch (kind()) {
 		case ErrorKind::NotFound:
@@ -112,7 +114,7 @@ private:
 	}
 
 	ErrorKind kind_;
-	std::optional<RawOsError> code_;
+	Option<RawOsError> code_;
 };
 
 }  // namespace io

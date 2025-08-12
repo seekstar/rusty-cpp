@@ -65,6 +65,29 @@ static inline unsigned long long next_power_of_two(unsigned long long x) {
 	return detail::next_power_of_two_uint(x);
 }
 
+template <typename T>
+class Ref {
+public:
+	Ref(T &v) : v_(&v) {}
+	Ref(std::reference_wrapper<T> v) : v_(&v.get()) {}
+
+	Ref(const Ref<T> &v) : v_(&v.deref()) {}
+
+	T &operator*() const { return *v_; }
+	T *operator->() const { return v_; }
+
+	T &deref() const { return *v_; }
+
+protected:
+	Ref(T *v) : v_(v) {}
+	T *v_;
+};
+
+template <typename T>
+Ref<T> ref(T &v) {
+	return Ref<T>(v);
+}
+
 }  // namespace rusty
 
 #endif // RUSTY_PRIMITIVE_H_

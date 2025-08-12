@@ -8,11 +8,11 @@ namespace {
 void pop_all(rusty::MinHeap<int> &heap, std::priority_queue<int, std::vector<int>, std::greater<int>> &q) {
 	for (;;) {
 		auto ret = heap.pop();
-		if (!ret.has_value()) {
+		if (ret.is_none()) {
 			break;
 		}
 		ASSERT_TRUE(!q.empty());
-		ASSERT_EQ(ret.value(), q.top());
+		ASSERT_EQ(ret.as_ref().unwrap_unchecked().deref(), q.top());
 		q.pop();
 	}
 	ASSERT_TRUE(q.empty());
@@ -23,7 +23,7 @@ TEST_F(Test, MinHeapSimple) {
 	rusty::MinHeap<int> heap;
 	ASSERT_TRUE(heap.is_empty());
 	ASSERT_TRUE(heap.peek() == nullptr);
-	ASSERT_FALSE(heap.peek_mut().has_value());
+	ASSERT_FALSE(heap.peek_mut().is_some());
 
 	std::vector<int> data{3, 6, 4, 1, 7};
 	std::priority_queue<int, std::vector<int>, std::greater<int>> q(data.begin(), data.end());
@@ -34,8 +34,8 @@ TEST_F(Test, MinHeapSimple) {
 	heap = rusty::MakeMinHeap(data);
 	for (int x : data) {
 		auto res = heap.peek_mut();
-		ASSERT_TRUE(res.has_value());
-		auto &peeked = res.value();
+		ASSERT_TRUE(res.is_some());
+		auto peeked = std::move(res).unwrap_unchecked();
 		ASSERT_EQ(*peeked, q.top());
 		*peeked = x;
 		q.pop();

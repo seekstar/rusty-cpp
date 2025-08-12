@@ -2,10 +2,10 @@
 #define RUSTY_MIN_HEAP_H_
 
 #include "rusty/macro.h"
+#include "rusty/option.h"
 
 #include <cassert>
-#include <functional>
-#include <optional>
+#include <vector>
 
 namespace rusty {
 
@@ -92,20 +92,20 @@ public:
 		return &v_[0];
 	}
 
-	std::optional<PeekMut> peek_mut() {
+	Option<PeekMut> peek_mut() {
 		rusty_assert(!mut_borrowed_);
 		if (v_.empty()) {
-			return std::nullopt;
+			return None;
 		}
 		return PeekMut(*this);
 	}
 
-	std::optional<T> pop() {
+	Option<T> pop() {
 		rusty_assert(!mut_borrowed_);
 		if (v_.empty()) {
-			return std::nullopt;
+			return None;
 		}
-		std::optional<T> ret = std::move(v_[0]);
+		Option<T> ret = std::move(v_[0]);
 		remove_root();
 		return ret;
 	}
