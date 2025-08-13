@@ -16,8 +16,9 @@ TEST_F(Test, Option) {
 		std::optional<rusty::Ref<const int>> x = rusty::None;
 		ASSERT_EQ(x, std::nullopt);
 
-		x = rusty::Option<rusty::Ref<const int>>(rusty::ref(233));
-		ASSERT_EQ(x, std::optional<rusty::Ref<const int>>(rusty::ref(233)));
+		const int v = 233;
+		x = rusty::Option<rusty::Ref<const int>>(rusty::ref(v));
+		ASSERT_EQ(x, std::optional<rusty::Ref<const int>>(rusty::ref(v)));
 	}
 
 	{
@@ -31,8 +32,9 @@ TEST_F(Test, Option) {
 		rusty::Option<rusty::Ref<const int>> x = std::nullopt;
 		ASSERT_EQ(x, rusty::None);
 
-		x = std::optional<rusty::Ref<const int>>(rusty::ref(233));
-		ASSERT_EQ(x, rusty::Option<rusty::Ref<const int>>(rusty::ref(233)));
+		const int v = 233;
+		x = std::optional<rusty::Ref<const int>>(rusty::ref(v));
+		ASSERT_EQ(x, rusty::Option<rusty::Ref<const int>>(rusty::ref(v)));
 	}
 
 	{
