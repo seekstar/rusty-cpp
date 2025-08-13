@@ -20,7 +20,7 @@ public:
 			peeked.heap_ = nullptr;
 		}
 		PeekMut &operator=(PeekMut &&peeked) {
-			~PeekMut();
+			this->~PeekMut();
 			heap_ = peeked.heap_;
 			peeked.heap_ = nullptr;
 			return *this;
