@@ -159,6 +159,8 @@ TEST_F(Test, MergingIteratorSimple) {
 		ASSERT_NO_FATAL_FAILURE(check_equal(v, c));
 	}
 
+	// Test whether MergingIterator supports iterators that return temporary
+	// references
 	{
 		std::vector<std::unique_ptr<rusty::Peek<std::weak_ptr<int>>>> iters;
 		auto iter = rusty::NewMergingIterator(std::move(iters), Compare());
