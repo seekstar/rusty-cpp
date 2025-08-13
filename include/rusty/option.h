@@ -62,6 +62,7 @@ public:
 	Option<value_type> take() {
 		Option<value_type> ret;
 		std::swap(*this, ret);
+		return ret;
 	}
 
 private:
