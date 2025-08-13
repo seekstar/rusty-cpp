@@ -45,6 +45,13 @@ public:
 		}
 		return &v_.value();
 	}
+	T *as_ptr() {
+		if (is_none()) {
+			return nullptr;
+		}
+		return &v_.value();
+	}
+
 	bool is_none() const {
 		return !v_.has_value();
 	}
@@ -86,6 +93,13 @@ public:
 		}
 		return this;
 	}
+	Ref<T> *as_ptr() {
+		if (is_none()) {
+			return nullptr;
+		}
+		return this;
+	}
+
 	bool is_none() const {
 		return this->v_ == nullptr;
 	}

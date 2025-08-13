@@ -78,6 +78,14 @@ public:
 
 	T &deref() const { return *v_; }
 
+	template <
+		typename U = T,
+		typename = decltype(std::declval<T>() < std::declval<U>())
+	>
+	bool operator<(const Ref<U> &rhs) const {
+		return deref() < rhs.deref();
+	}
+
 protected:
 	Ref(T *v) : v_(v) {}
 	T *v_;
