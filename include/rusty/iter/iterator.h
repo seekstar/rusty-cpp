@@ -42,6 +42,13 @@ private:
 	I iter_;
 };
 
+template <typename I>
+std::unique_ptr<Iterator<typename I::value_type>> NewIterator(I &&iter) {
+	return std::make_unique<
+		typename Iterator<typename I::value_type>::template FatPointer<I>
+	>(std::forward<I>(iter));
+}
+
 namespace detail {
 
 template <typename T>
@@ -91,6 +98,8 @@ void collect_into(
 	collect_into(detail::IteratorImpl<I>(std::forward<I>(iter)), v);
 }
 
+namespace slice {
+
 template <typename T>
 class Iter {
 public:
@@ -104,10 +113,10 @@ public:
 		++it_;
 		return ret;
 	}
-
 	Option<value_type> next() {
 		return next(type_tag_t<Iterator<value_type>>());
 	}
+
 private:
 	const T *it_;
 	const T *end_;
@@ -123,12 +132,7 @@ Iter<T> MakeIter(const std::vector<T> &v) {
 	return Iter<T>(v.data(), v.data() + v.size());
 }
 
-template <typename T>
-std::unique_ptr<Iterator<Ref<const T>>> MakeTraitObject(Iter<T> &&iter) {
-	return std::make_unique<
-		typename Iterator<Ref<const T>>::template FatPointer<Iter<T>>
-	>(std::move(iter));
-}
+} // namespace slice
 
 } // namespace rusty
 

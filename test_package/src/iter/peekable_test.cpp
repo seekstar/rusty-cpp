@@ -1,4 +1,3 @@
-#include "rusty/iter/iterator.h"
 #include "rusty/iter/peekable.h"
 #include "test.h"
 
@@ -22,19 +21,23 @@ TEST_F(Test, PeekableSimple) {
 	for (size_t i = 0; i < 10; ++i) {
 		a.push_back(i);
 	}
-	auto iter = rusty::MakePeekable(rusty::MakeIter(a.data(), a.data()));
+	auto iter = rusty::MakePeekable(rusty::slice::MakeIter(a.data(), a.data()));
 	ASSERT_TRUE(iter.peek() == nullptr);
 	ASSERT_TRUE(iter.next().is_none());
 
-	ASSERT_NO_FATAL_FAILURE(check(rusty::MakePeekable(rusty::MakeIter(a)), a));
 	ASSERT_NO_FATAL_FAILURE(check(
-		rusty::MakePeekable(rusty::MakeTraitObject(rusty::MakeIter(a))),
-		a
+		rusty::MakePeekable(rusty::slice::MakeIter(a)), a
 	));
 	ASSERT_NO_FATAL_FAILURE(check(
-		*rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeTraitObject(rusty::MakeIter(a)))
-		),
+		rusty::MakePeekable(rusty::NewIterator(rusty::slice::MakeIter(a))), a
+	));
+	ASSERT_NO_FATAL_FAILURE(check(
+		*rusty::NewPeek(rusty::MakePeekable(rusty::slice::MakeIter(a))), a
+	));
+	ASSERT_NO_FATAL_FAILURE(check(
+		*rusty::NewPeek(rusty::MakePeekable(
+			rusty::NewIterator(rusty::slice::MakeIter(a))
+		)),
 		a
 	));
 }

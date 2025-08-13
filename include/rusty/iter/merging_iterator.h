@@ -15,7 +15,7 @@ public:
 	MergingIterator &operator=(MergingIterator<T, Compare> &&rhs) = delete;
 
 	explicit MergingIterator(
-		std::vector<std::unique_ptr<PeekableIterator<T>>> iters,
+		std::vector<std::unique_ptr<Peek<T>>> iters,
 		Compare cmp = Compare()
 	) : heap_(
 			(eraseEmptyIters(iters), std::move(iters)), IterCmp(std::move(cmp))
@@ -40,7 +40,7 @@ public:
 	}
 
 private:
-	using I = std::unique_ptr<PeekableIterator<T>>;
+	using I = std::unique_ptr<Peek<T>>;
 
 	class IterCmp {
 	public:
@@ -58,7 +58,7 @@ private:
 	};
 
 	static void eraseEmptyIters(
-		std::vector<std::unique_ptr<PeekableIterator<T>>>& iters
+		std::vector<std::unique_ptr<Peek<T>>>& iters
 	) {
 		// Use erase_if after upgrading to C++20
 		size_t i = 0;
@@ -85,7 +85,7 @@ private:
 
 template <typename T, typename Compare = std::less<T>>
 std::unique_ptr<Iterator<T>> NewMergingIterator(
-	std::vector<std::unique_ptr<PeekableIterator<T>>> iters,
+	std::vector<std::unique_ptr<Peek<T>>> iters,
 	Compare cmp = Compare()
 ) {
 	return std::make_unique<MergingIterator<T, Compare>>(

@@ -1,6 +1,4 @@
-#include "rusty/iter/iterator.h"
 #include "rusty/iter/merging_iterator.h"
-#include "rusty/iter/peekable.h"
 #include "test.h"
 
 #include <gtest/gtest.h>
@@ -23,13 +21,13 @@ TEST_F(Test, MergingIteratorSimple) {
 
 	{
 		std::vector<
-			std::unique_ptr<rusty::PeekableIterator<rusty::Ref<const int>>>
+			std::unique_ptr<rusty::Peek<rusty::Ref<const int>>>
 		> iters;
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(a.data(), a.data()))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(a.data(), a.data()))
 		));
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(b.data(), b.data()))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(b.data(), b.data()))
 		));
 		std::vector<rusty::Ref<const int>> v;
 		rusty::collect_into(rusty::NewMergingIterator(std::move(iters)), v);
@@ -37,13 +35,13 @@ TEST_F(Test, MergingIteratorSimple) {
 	}
 	{
 		std::vector<
-			std::unique_ptr<rusty::PeekableIterator<rusty::Ref<const int>>>
+			std::unique_ptr<rusty::Peek<rusty::Ref<const int>>>
 		> iters;
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(a))
-		));
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(b.data(), b.data()))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(a)))
+		);
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(b.data(), b.data()))
 		));
 		std::vector<rusty::Ref<const int>> v;
 		rusty::collect_into(rusty::NewMergingIterator(std::move(iters)), v);
@@ -51,13 +49,13 @@ TEST_F(Test, MergingIteratorSimple) {
 	}
 	{
 		std::vector<
-			std::unique_ptr<rusty::PeekableIterator<rusty::Ref<const int>>>
+			std::unique_ptr<rusty::Peek<rusty::Ref<const int>>>
 		> iters;
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(a.data(), a.data()))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(a.data(), a.data()))
 		));
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(b))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(b))
 		));
 		std::vector<rusty::Ref<const int>> v;
 		rusty::collect_into(rusty::NewMergingIterator(std::move(iters)), v);
@@ -65,13 +63,13 @@ TEST_F(Test, MergingIteratorSimple) {
 	}
 	{
 		std::vector<
-			std::unique_ptr<rusty::PeekableIterator<rusty::Ref<const int>>>
+			std::unique_ptr<rusty::Peek<rusty::Ref<const int>>>
 		> iters;
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(a))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(a))
 		));
-		iters.push_back(rusty::MakeTraitObject(
-			rusty::MakePeekable(rusty::MakeIter(b))
+		iters.push_back(rusty::NewPeek(
+			rusty::MakePeekable(rusty::slice::MakeIter(b))
 		));
 		std::vector<rusty::Ref<const int>> v;
 		auto iter = rusty::NewMergingIterator(std::move(iters));

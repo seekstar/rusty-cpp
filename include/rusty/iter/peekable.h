@@ -7,16 +7,16 @@
 
 namespace rusty {
 
-// Trait object for TraitPeekableIterator
+// Trait object for TraitPeek
 template <typename T>
-class PeekableIterator : public Iterator<T> {
+class Peek : public Iterator<T> {
 public:
 	static_assert(std::is_same_v<T, typename Iterator<T>::value_type>);
 	using value_type = T;
 
-	virtual const value_type *peek(type_tag_t<PeekableIterator<value_type>>) = 0;
+	virtual const value_type *peek(type_tag_t<Peek<value_type>>) = 0;
 	const value_type *peek() {
-		return peek(type_tag_t<PeekableIterator<value_type>>());
+		return peek(type_tag_t<Peek<value_type>>());
 	}
 
 	template <typename I>
@@ -25,21 +25,28 @@ public:
 
 template <typename T>
 template <typename I>
-class PeekableIterator<T>::FatPointer : public PeekableIterator<T> {
+class Peek<T>::FatPointer : public Peek<T> {
 public:
 	explicit FatPointer(I &&iter) : iter_(std::move(iter)) {}
 	Option<T> next(type_tag_t<Iterator<T>>) override {
 		return iter_.next(type_tag_t<Iterator<T>>());
 	}
-	const T* peek(type_tag_t<PeekableIterator<T>>) override {
-		return iter_.peek(type_tag_t<PeekableIterator<T>>());
+	const T *peek(type_tag_t<Peek<T>>) override {
+		return iter_.peek(type_tag_t<Peek<T>>());
 	}
 
 private:
 	I iter_;
 };
 
-// impl TraitPeekableIterator
+template <typename I>
+std::unique_ptr<Peek<typename I::value_type>> NewPeek(I &&iter) {
+	return std::make_unique<
+		typename Peek<typename I::value_type>::template FatPointer<I>
+	>(std::forward<I>(iter));
+}
+
+// impl TraitPeek
 template <typename I>
 class Peekable {
 public:
@@ -57,7 +64,7 @@ public:
 		return next(type_tag_t<Iterator<value_type>>());
 	}
 
-	const value_type *peek(type_tag_t<PeekableIterator<value_type>>) {
+	const value_type *peek(type_tag_t<Peek<value_type>>) {
 		auto peeked = peeked_.as_ptr();
 		if (peeked != nullptr) {
 			return peeked;
@@ -66,7 +73,7 @@ public:
 		return peeked_.as_ptr();
 	}
 	const value_type *peek() {
-		return peek(type_tag_t<PeekableIterator<value_type>>());
+		return peek(type_tag_t<Peek<value_type>>());
 	}
 
 private:
@@ -82,16 +89,6 @@ Peekable<I> MakePeekable(I &&iter) {
 template <typename I, typename = std::enable_if_t<detail::IteratorImpl<I>::impl>>
 Peekable<detail::IteratorImpl<I>> MakePeekable(I &&iter) {
   return MakePeekable(detail::IteratorImpl<I>(std::forward<I>(iter)));
-}
-
-template <typename I>
-auto MakeTraitObject(
-	Peekable<I> &&peekable
-) -> std::unique_ptr<PeekableIterator<typename I::value_type>> {
-	return std::make_unique<
-		typename PeekableIterator<typename I::value_type>
-			::template FatPointer<Peekable<I>>
-	>(std::move(peekable));
 }
 
 } // namespace rusty
