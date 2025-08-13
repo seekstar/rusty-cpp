@@ -12,7 +12,7 @@ void pop_all(rusty::MinHeap<int> &heap, std::priority_queue<int, std::vector<int
 			break;
 		}
 		ASSERT_TRUE(!q.empty());
-		ASSERT_EQ(ret.as_ref().unwrap_unchecked().deref(), q.top());
+		ASSERT_EQ(*ret.as_ptr(), q.top());
 		q.pop();
 	}
 	ASSERT_TRUE(q.empty());

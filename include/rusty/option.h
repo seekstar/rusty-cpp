@@ -39,12 +39,6 @@ public:
 		std::in_place_t, Args &&... args
 	) : v_(std::in_place, std::forward<Args>(args)...) {}
 
-	Option<Ref<const T>> as_ref() const {
-		if (is_none()) {
-			return None;
-		}
-		return ref(v_.value());
-	}
 	const T *as_ptr() const {
 		if (is_none()) {
 			return nullptr;
@@ -85,12 +79,6 @@ public:
 	Option(Ref<T> x) : Ref<T>(x) {}
 	Option(std::in_place_t, Ref<T> x) : Ref<T>(x) {}
 
-	Option<Ref<const Ref<T>>> as_ref() const {
-		if (is_none()) {
-			return None;
-		}
-		return ref(static_cast<const Ref<T> &>(*this));
-	}
 	const Ref<T> *as_ptr() const {
 		if (is_none()) {
 			return nullptr;

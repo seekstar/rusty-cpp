@@ -57,10 +57,9 @@ public:
 	}
 
 	void print(std::ostream &out) const override {
-		auto code = code_.as_ref();
-		if (code.is_some()) {
-			RawOsError e = std::move(code).unwrap_unchecked().deref();
-			switch (e) {
+		const RawOsError *code = code_.as_ptr();
+		if (code) {
+			switch (*code) {
 			case ENOENT:
 				out << "No such file or directory";
 				break;
@@ -77,7 +76,7 @@ public:
 				out << "Unrecoginized OS error";
 				break;
 			}
-			out << " (os error " << e << ")";
+			out << " (os error " << *code << ")";
 		}
 		switch (kind()) {
 		case ErrorKind::NotFound:
