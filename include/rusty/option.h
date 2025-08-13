@@ -8,10 +8,20 @@
 
 namespace rusty {
 
-inline class None {} None;
-
 template <typename T>
 class Option;
+
+inline class None {
+public:
+	template <typename T>
+	operator std::optional<T>() {
+		return std::nullopt;
+	}
+
+	bool operator==(std::nullopt_t) const {
+		return true;
+	}
+} None;
 
 template <typename T, typename... Args>
 Option<T> MakeOption(Args &&...args) {
@@ -25,7 +35,6 @@ private:
 
 public:
 	Option() : v_(std::nullopt) {}
-	Option(class None) : v_(std::nullopt) {}
 	Option(T &&x) : v_(std::move(x)) {}
 
 	template <
@@ -38,6 +47,12 @@ public:
 	Option(
 		std::in_place_t, Args &&... args
 	) : v_(std::in_place, std::forward<Args>(args)...) {}
+
+	Option(const std::optional<T> &x) : v_(x) {}
+	Option(std::optional<T> &&x) : v_(std::move(x)) {}
+	operator std::optional<value_type>() && {
+		return std::move(v_);
+	}
 
 	const T *as_ptr() const {
 		if (is_none()) {
@@ -62,6 +77,26 @@ public:
 		return std::move(v_.value());
 	}
 
+	Option(class None) : Option() {}
+	Option(std::nullopt_t) : Option() {}
+
+	template <
+		typename U = value_type,
+		typename = decltype(std::declval<value_type>() == std::declval<U>())
+	>
+	bool operator==(const Option<U> &rhs) const {
+		auto a = as_ptr();
+		auto b = rhs.as_ptr();
+		if (a == nullptr) {
+			return b == nullptr;
+		}
+		return *a == *b;
+	}
+
+	bool operator==(class None) const {
+		return is_none();
+	}
+
 	value_type unwrap() && {
 		rusty_assert(is_some());
 		return std::move(*this).unwrap_unchecked();
@@ -83,9 +118,12 @@ private:
 
 public:
 	Option() : Ref<T>(nullptr) {}
-	Option(class None) : Ref<T>(nullptr) {}
 	Option(Ref<T> x) : Ref<T>(x) {}
 	Option(std::in_place_t, Ref<T> x) : Ref<T>(x) {}
+
+	Option(
+		std::optional<Ref<T>> x
+	) : Ref<T>(x.has_value() ? x.value() : nullptr) {}
 
 	const Ref<T> *as_ptr() const {
 		if (is_none()) {
@@ -108,6 +146,33 @@ public:
 	}
 	Ref<T> unwrap_unchecked() && {
 		return *this;
+	}
+
+	operator std::optional<value_type>() && {
+		if (is_none()) {
+			return std::nullopt;
+		}
+		return std::move(*this).unwrap_unchecked();
+	}
+
+	Option(class None) : Option() {}
+	Option(std::nullopt_t) : Option() {}
+
+	template <
+		typename U = value_type,
+		typename = decltype(std::declval<value_type>() == std::declval<U>())
+	>
+	bool operator==(const Option<U> &rhs) const {
+		auto a = as_ptr();
+		auto b = rhs.as_ptr();
+		if (a == nullptr) {
+			return b == nullptr;
+		}
+		return *a == *b;
+	}
+
+	bool operator==(class None) const {
+		return is_none();
 	}
 
 	value_type unwrap() && {

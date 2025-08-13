@@ -5,6 +5,9 @@
 
 namespace rusty {
 
+template <typename T>
+class Option;
+
 namespace detail {
 
 template <typename T>
@@ -86,14 +89,28 @@ public:
 		return deref() < rhs.deref();
 	}
 
-protected:
+	template <
+		typename U = T,
+		typename = decltype(std::declval<T>() == std::declval<U>())
+	>
+	bool operator==(const Ref<U> &rhs) const {
+		return deref() == rhs.deref();
+	}
+
+private:
 	Ref(T *v) : v_(v) {}
 	T *v_;
+	friend class Option<Ref<T>>;
 };
 
 template <typename T>
 Ref<T> ref(T &v) {
 	return Ref<T>(v);
+}
+
+template <typename T>
+Ref<const T> ref(const T &v) {
+	return Ref<const T>(v);
 }
 
 }  // namespace rusty
