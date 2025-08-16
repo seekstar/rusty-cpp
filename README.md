@@ -2,7 +2,7 @@
 
 Write C++ code like Rust!
 
-This project does not simply port code from Rust standard library to C++. Instead, this project provides C++ utilities with similar API in Rust standard library.
+This project does not simply port code from the Rust standard library to C++. Instead, this project provides C++ utilities with a similar API to the Rust standard library.
 
 This project is highly incomplete, but I will maintain this project in the long term.
 
@@ -14,7 +14,7 @@ This project is dual licensed under the Apache License v2.0 and the MIT License.
 
 ### Never return rvalue reference
 
-Here we discuss two scenarios where you may want to return rvalue reference.
+Here we discuss two scenarios where you may want to return a rvalue reference.
 
 #### Chained function call
 
@@ -47,7 +47,7 @@ A better practice is returning an object with ownership:
 
 Then it will print `4` correctly.
 
-However, if `Builder` or any of its members has non-default move constructor or move assignment operator, the compiler won't optimize out the move construction or move assignment of `Builder`. For example:
+However, if `Builder` or any of its members has a non-default move constructor or move assignment operator, the compiler won't optimize out the move construction or move assignment of `Builder`. For example:
 
 ```cpp
 #include <iostream>
@@ -90,7 +90,7 @@ Move assign 514
 514
 ```
 
-Therefore, the best practice is forgetting chained function call in Rust and returning nothing:
+Therefore, the best practice is to forget chained function calls in Rust and return nothing:
 
 ```cpp
 struct Builder {
@@ -109,7 +109,7 @@ int main() {
 }
 ```
 
-If you really want to support chained function call, you should return lvalue reference:
+If you really want to support chained function calls, you should return an lvalue reference:
 
 ```cpp
 struct Builder {
@@ -170,13 +170,13 @@ int main() {
 
 `A &&a` will become a dangling reference.
 
-The correct approach is to return object with ownership:
+The correct approach is to return an object with ownership:
 
 ```cpp
 A unwrap(std::optional<A> &&x) {
 ```
 
-The the output will be correct:
+The output will be correct:
 
 ```text
 233
