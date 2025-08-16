@@ -33,7 +33,7 @@ int main() {
 }
 ```
 
-You will find that it prints `0`. This is because when assigning the rvalue reference of `builder` to itself, it will first destruct itself and then assign the destructed itself to itself. As a result, it's basically destructed.
+You will find that it prints `0`. It's because when assigning the rvalue reference of `builder` to itself, it will first destruct itself and then assign the destructed itself to itself. As a result, it's basically destructed.
 
 A better practice is returning an object with ownership:
 
@@ -41,16 +41,87 @@ A better practice is returning an object with ownership:
 	Builder with_value(std::string v) && {
 ```
 
-Then it will print `4` correctly. However, `builder = std::move(builder)` will still destruct `builder` (there will be a self-move warning if you compile with `-Wself-move`). The root cause is that `std::move` returns rvalue reference. rusty-cpp provides `rusty::move` that returns an object with ownership to solve this problem:
+Then it will print `4` correctly.
+
+However, if `Builder` or any of its members has non-default move constructor or move assignment operator, the compiler won't optimize out the move construction or move assignment of `Builder`. For example:
 
 ```cpp
 #include <iostream>
-#include <rusty/primitive.h>
+struct A {
+	int id;
+	A(int _id) : id(_id) {}
+	A(A &&rhs) {
+		std::cout << "Moving " << rhs.id << std::endl;
+		id = rhs.id;
+		rhs.id = 0;
+	}
+	A &operator=(A &&rhs) {
+		std::cout << "Move assign " << rhs.id << std::endl;
+		id = rhs.id;
+		rhs.id = 0;
+		return *this;
+	}
+};
+struct Builder {
+	A a;
+	Builder(int id) : a(id) {}
+	Builder update_id(int new_id) && {
+		a.id = new_id;
+		return std::move(*this);
+	}
+};
 int main() {
-	std::string v = "2333";
-	v = rusty::move(v);
-	// Prints "4"
-	std::cout << v.size() << std::endl;
+	Builder builder(114);
+	builder = std::move(builder).update_id(514);
+	std::cout << builder.a.id << std::endl;
+	return 0;
+}
+```
+
+Output:
+
+```text
+Moving 514
+Move assign 514
+514
+```
+
+Therefore, the best practice is forgetting chained function call in Rust and returning nothing:
+
+```cpp
+struct Builder {
+	A a;
+	Builder(int id) : a(id) {}
+	void update_id(int new_id) {
+		a.id = new_id;
+	}
+};
+int main() {
+	Builder builder(114);
+	builder.update_id(514);
+	builder.update_id(233);
+	std::cout << builder.a.id << std::endl;
+	return 0;
+}
+```
+
+If you really want to support chained function call, you should return lvalue reference:
+
+```cpp
+struct Builder {
+	A a;
+	Builder(int id) : a(id) {}
+	Builder &update_id(int new_id) {
+		a.id = new_id;
+		return *this;
+	}
+};
+int main() {
+	Builder builder(114);
+	builder
+		.update_id(514)
+		.update_id(233);
+	std::cout << builder.a.id << std::endl;
 	return 0;
 }
 ```
