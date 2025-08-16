@@ -176,7 +176,7 @@ The correct approach is to return an object with ownership:
 A unwrap(std::optional<A> &&x) {
 ```
 
-The output will be correct:
+Then the output will be correct:
 
 ```text
 233
