@@ -113,6 +113,11 @@ Ref<const T> ref(const T &v) {
 	return Ref<const T>(v);
 }
 
+template <typename T>
+typename std::remove_reference_t<T> move(T &&v) {
+	return std::move(v);
+}
+
 }  // namespace rusty
 
 #endif // RUSTY_PRIMITIVE_H_
