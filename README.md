@@ -14,7 +14,11 @@ This project is dual licensed under the Apache License v2.0 and the MIT License.
 
 ### Never return rvalue reference
 
-This is a negative example of returning rvalue reference:
+Here we discuss two scenarios where you may want to return rvalue reference.
+
+#### Chained function call
+
+If you return rvalue reference:
 
 ```cpp
 #include <iostream>
@@ -124,4 +128,57 @@ int main() {
 	std::cout << builder.a.id << std::endl;
 	return 0;
 }
+```
+
+#### Unwrap something
+
+If you return rvalue reference:
+
+```cpp
+#include <iostream>
+#include <optional>
+struct A {
+	int id;
+	A(int _id) : id(_id) {}
+	A(A &&rhs) : id(rhs.id) {
+		rhs.id = 0;
+	}
+	A &operator=(A &&rhs) {
+		id = rhs.id;
+		rhs.id = 0;
+		return *this;
+	}
+	~A() {
+		if (id == 0) {
+			return;
+		}
+		std::cout << id << " destructed" << std::endl;
+		id = 0;
+	}
+};
+
+A &&unwrap(std::optional<A> &&x) {
+	return std::move(x.value());
+}
+
+int main() {
+	A &&a = unwrap(std::make_optional<A>(233));
+	std::cout << a.id << std::endl;
+	return 0;
+}
+```
+
+`A &&a` will become a dangling reference.
+
+The correct approach is to return object with ownership:
+
+```cpp
+A unwrap(std::optional<A> &&x) {
+```
+
+The the output will be correct:
+
+```text
+233
+233 destructed
 ```
