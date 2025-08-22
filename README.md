@@ -140,6 +140,8 @@ struct Builder {
         }
         return *this;
 	}
+...
+}
 ```
 
 #### Unwrap something
