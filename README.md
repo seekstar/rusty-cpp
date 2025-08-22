@@ -136,7 +136,7 @@ Or, if you still prefer the rusty pattern `builder = std::move(builder).update_i
 struct Builder {
 	Builder &=operator(Builder &&other) {
 		if (this != &other) {
-            A = std::move(other.A);
+            a = std::move(other.a);
         }
         return *this;
 	}
