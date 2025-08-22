@@ -130,6 +130,18 @@ int main() {
 }
 ```
 
+Or, if you still prefer the rusty pattern `builder = std::move(builder).update_id(514);`, you should define the move assignment like this to prevent self-move:
+
+```cpp
+struct Builder {
+	Builder &=operator(Builder &&other) {
+		if (this != &other) {
+            A = std::move(other.A);
+        }
+        return *this;
+	}
+```
+
 #### Unwrap something
 
 If you return rvalue reference:
