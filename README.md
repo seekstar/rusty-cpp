@@ -109,7 +109,7 @@ int main() {
 }
 ```
 
-If you really want to support chained function calls, you should return an lvalue reference:
+If you want to support chained function calls, you should return an lvalue reference:
 
 ```cpp
 struct Builder {
@@ -130,11 +130,11 @@ int main() {
 }
 ```
 
-Or, if you still prefer the rusty pattern `builder = std::move(builder).update_id(514);`, you should define the move assignment like this to prevent self-move:
+If you insist to support the rusty pattern `builder = std::move(builder).update_id(514);`, you should define the move assignment like this to prevent self-move:
 
 ```cpp
 struct Builder {
-	Builder &=operator(Builder &&other) {
+	Builder &operator=(Builder &&other) {
 		if (this != &other) {
             a = std::move(other.a);
         }
