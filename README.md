@@ -144,6 +144,8 @@ struct Builder {
 }
 ```
 
+In some cases, the compiler can optimize out the branch. However, it's observed that sometimes the compiler refuses to inline the move assignment and thus fails to optimize out the branch.
+
 #### Unwrap something
 
 If you return rvalue reference:
