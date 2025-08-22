@@ -135,7 +135,7 @@ If you insist to support the rusty pattern `builder = std::move(builder).update_
 ```cpp
 struct Builder {
 	Builder &operator=(Builder &&other) {
-		if (this != &other) {
+		if (this != &other) { // sometimes won't be optimized out
             a = std::move(other.a);
         }
         return *this;
