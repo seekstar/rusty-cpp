@@ -6,7 +6,7 @@ required_conan_version = ">=2.0"
 
 class rusty_cppRecipe(ConanFile):
     name = "rusty-cpp"
-    version = "0.1.12"
+    version = "0.1.13"
     description = "Write C++ like Rust!"
     # dual licensed under the Apache License v2.0 and the MIT License
     license = "Apache-2.0", "MIT"
