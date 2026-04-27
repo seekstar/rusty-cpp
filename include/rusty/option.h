@@ -2,11 +2,12 @@
 #define RUSTY_OPTION_H_
 
 #include "rusty/primitive.h"
+#include "rusty/version.h"
 
 #include <optional>
 #include <type_traits>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T>
 class Option;
@@ -187,6 +188,6 @@ public:
 };
 static_assert(sizeof(Option<Ref<int>>) == sizeof(int *));
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_OPTION_H_

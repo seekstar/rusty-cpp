@@ -1,9 +1,11 @@
 #ifndef RUSTY_KEYWORD_H_
 #define RUSTY_KEYWORD_H_
 
+#include "rusty/version.h"
+
 #include <variant>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 // explicit deduction guide (not needed as of C++20)
@@ -26,6 +28,6 @@ auto match(Val &&val, Ts... ts) {
 	return std::visit(overloaded{ts...}, std::forward<Val>(val));
 }
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_KEYWORD_H_

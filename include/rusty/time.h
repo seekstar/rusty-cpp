@@ -1,9 +1,11 @@
 #ifndef RUSTY_TIME_H_
 #define RUSTY_TIME_H_
 
+#include "rusty/version.h"
+
 #include <chrono>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 namespace time {
 class Duration {
 public:
@@ -67,6 +69,6 @@ private:
 	std::chrono::steady_clock::time_point time_;
 };
 } // namespace time
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_TIME_H_

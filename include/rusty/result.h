@@ -2,10 +2,11 @@
 #define RUSTY_RESULT_H_
 
 #include "rusty/macro.h"
+#include "rusty/version.h"
 
 #include <variant>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T, typename E>
 class [[nodiscard]] Result : std::variant<T, E> {
@@ -37,7 +38,7 @@ public:
 	}
 };
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #define rusty_check_result_impl(name, expr) ({ \
 	auto && (name) = (expr); \

@@ -1,9 +1,11 @@
 #ifndef RUSTY_INTRINSICS_H_
 #define RUSTY_INTRINSICS_H_
- 
+
+#include "rusty/version.h"
+
 #include <atomic>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 namespace intrinsics {
 
 // Returns the previous value
@@ -20,6 +22,6 @@ T atomic_max_relaxed(std::atomic<T> &dst, T src) {
 }
 
 } // namespace intrinsics
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_INTRINSICS_H_

@@ -2,13 +2,13 @@
 #define RUSTY_ITERATOR_H_
 
 #include "rusty/option.h"
+#include "rusty/version.h"
 
-#include <functional>
 #include <memory>
 #include <type_traits>
 #include <vector>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T>
 struct type_tag_t {};
@@ -134,6 +134,6 @@ Iter<T> MakeIter(const std::vector<T> &v) {
 
 } // namespace slice
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_ITERATOR_H_

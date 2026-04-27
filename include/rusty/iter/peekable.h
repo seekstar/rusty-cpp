@@ -2,10 +2,11 @@
 #define RUSTY_PEEKABLE_H_
 
 #include "rusty/iter/iterator.h"
+#include "rusty/version.h"
 
 #include <memory>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 // Trait object for TraitPeek
 template <typename T>
@@ -91,6 +92,6 @@ Peekable<detail::IteratorImpl<I>> MakePeekable(I &&iter) {
   return MakePeekable(detail::IteratorImpl<I>(std::forward<I>(iter)));
 }
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_PEEKABLE_H_

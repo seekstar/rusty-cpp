@@ -1,9 +1,11 @@
 #ifndef RUSTY_MEM_H_
 #define RUSTY_MEM_H_
 
+#include "rusty/version.h"
+
 #include <utility>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 namespace mem {
 
 template <typename T>
@@ -28,6 +30,6 @@ private:
 };
 
 } // namespace mem
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_MEM_H_

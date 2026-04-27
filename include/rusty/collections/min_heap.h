@@ -3,11 +3,12 @@
 
 #include "rusty/macro.h"
 #include "rusty/option.h"
+#include "rusty/version.h"
 
 #include <cassert>
 #include <vector>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T, typename Compare = std::less<T>>
 class MinHeap {
@@ -153,6 +154,6 @@ MinHeap<T, Compare> MakeMinHeap(std::vector<T> v, Compare compare = Compare()) {
 	return MinHeap<T, Compare>(std::move(v), std::move(compare));
 }
 
-}  // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_MIN_HEAP_H_

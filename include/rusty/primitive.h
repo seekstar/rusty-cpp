@@ -2,8 +2,9 @@
 #define RUSTY_PRIMITIVE_H_
 
 #include "rusty/macro.h"
+#include "rusty/version.h"
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T>
 class Option;
@@ -113,6 +114,6 @@ Ref<const T> ref(const T &v) {
 	return Ref<const T>(v);
 }
 
-}  // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_PRIMITIVE_H_

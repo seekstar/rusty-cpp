@@ -3,10 +3,11 @@
 
 #include "rusty/option.h"
 #include "rusty/result.h"
+#include "rusty/version.h"
 
 #include <ostream>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 namespace error {
 
@@ -129,6 +130,6 @@ using Result = rusty::Result<T, Error>;
 
 }  // namespace io
 
-}  // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_ERROR_H_

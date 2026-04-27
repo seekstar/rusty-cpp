@@ -1,9 +1,11 @@
 #ifndef RUSTY_SYNC_H_
 #define RUSTY_SYNC_H_
 
+#include "rusty/version.h"
+
 #include <mutex>
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 namespace sync {
 
 template <typename T>
@@ -36,6 +38,6 @@ private:
 };
 
 } // namespace sync
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_SYNC_H_

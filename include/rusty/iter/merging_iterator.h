@@ -4,8 +4,9 @@
 #include "rusty/collections/min_heap.h"
 #include "rusty/iter/iterator.h"
 #include "rusty/iter/peekable.h"
+#include "rusty/version.h"
 
-namespace rusty {
+RUSTY_BEGIN_NAMESPACE
 
 template <typename T, typename Compare = std::less<T>>
 class MergingIterator : public Iterator<T> {
@@ -93,6 +94,6 @@ std::unique_ptr<Iterator<T>> NewMergingIterator(
 	);
 }
 
-} // namespace rusty
+RUSTY_END_NAMESPACE
 
 #endif // RUSTY_MERGING_ITERATOR_H_
