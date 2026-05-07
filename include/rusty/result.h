@@ -41,7 +41,7 @@ public:
 RUSTY_END_NAMESPACE
 
 #define rusty_check_result_impl(name, expr) ({ \
-	auto && (name) = (expr); \
+	auto&& name = (expr); \
 	if ((name).is_err()) { \
 		return std::move(name).unwrap_err_unchecked(); \
 	} \
